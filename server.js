@@ -6,15 +6,26 @@ const fccTesting = require('./freeCodeCamp/fcctesting.js');
 
 const app = express();
 
-fccTesting(app); //For FCC testing purposes
+// FCC testing purposes
+fccTesting(app);
+
+// Serve static files
 app.use('/public', express.static(process.cwd() + '/public'));
+
+// Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.route('/').get((req, res) => {
+// Set Pug as the template engine
+app.set('view engine', 'pug');
+app.set('views', './views/pug');  // Set the views directory
 
+// Basic route for home page to render Pug template
+app.route('/').get((req, res) => {
+  res.render('index', { title: 'Metric/Imperial Converter', message: 'Successfully rendered the Pug template!' });
 });
 
+// Listen on the specified port
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log('Listening on port ' + PORT);
